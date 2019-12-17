@@ -1,0 +1,35 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="visualization:jar">
+    <output-path>$PROJECT_DIR$/bin/artifacts/visualization_jar</output-path>
+    <root id="archive" name="visualization.jar">
+      <element id="module-output" name="visualization" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/librealsense.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/opencv_processing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/core.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/RealSenseProcessing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/opencv-245.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/geomerative.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/jogl-all.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/jogl-all-natives-windows-i586.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/jogl-all-natives-windows-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/jogl-all-natives-macosx-universal.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/jogl-all-natives-linux-i586.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/jogl-all-natives-linux-armv6hf.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/jogl-all-natives-linux-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/jogl-all-natives-linux-aarch64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/gluegen-rt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/gluegen-rt-natives-windows-i586.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/gluegen-rt-natives-windows-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/gluegen-rt-natives-macosx-universal.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/gluegen-rt-natives-linux-i586.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/gluegen-rt-natives-linux-armv6hf.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/gluegen-rt-natives-linux-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="/Applications/Processing.app/Contents/Java/core/library/gluegen-rt-natives-linux-aarch64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../../Processing_3/libraries/video/library/jna.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/PostFX.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/ant/ant/1.10.6/ant-1.10.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/ant/ant-launcher/1.10.6/ant-launcher-1.10.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/jdk/Contents/Home/lib/tools.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
