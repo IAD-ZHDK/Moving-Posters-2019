@@ -4,7 +4,7 @@ package Posters;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Poster9 extends imgPoster{
+public class Poster9 extends ImgPoster {
 
     public Poster9(PApplet parent, boolean DEBUG) {
         super(parent, DEBUG, "templateImg/", "image", 119, 2);

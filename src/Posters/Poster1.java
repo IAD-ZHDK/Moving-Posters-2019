@@ -1,9 +1,9 @@
-// kilian
+// Kilian Ettlinger
 package Posters;
 
 import processing.core.*;
 
-public class Poster1 extends imgPoster{
+public class Poster1 extends ImgPoster {
 
     public Poster1(PApplet parent, boolean DEBUG) {
         super(parent, DEBUG, "Poster1/", "left", 120, 2);
@@ -15,7 +15,6 @@ public class Poster1 extends imgPoster{
        // p.image(imageArray[index], 0, 0);
         p.set(0, 0, imageArray[index]);
         p.set(p.width/2, 0, imageArray[index2]);
-       // p.image(imageArray[index2], p.width/2, 0);
     }
 
 }

@@ -14,7 +14,7 @@ public class Poster7 extends Poster{
    private PVector posNieves;
    private PVector posEnvies;
 
-   private PImage image;
+   //private PImage image;
    private float globalScale = 0.8f;
    private int amtBetween = 10;
 
@@ -40,7 +40,7 @@ public class Poster7 extends Poster{
 
        p.colorMode(p.HSB, 360, 100, 100, 1);
 
-       image = p.loadImage("Poster7/image2.png");
+       //image = p.loadImage("Poster7/image2.png");
 
        nieves = RG.loadShape("Poster7/nieves.svg");
        nieves = RG.centerIn(nieves, p.g);
@@ -94,11 +94,7 @@ public class Poster7 extends Poster{
 
         float stepSize = 1f / amtBetween;
         stepCounter += stepSize;
-
-
-        //println(pointIteratorStepSize);
         float pieceScale = x * 0.01f;
-        //ntln(mprintln(pieceScale);
         pieceScale = p.constrain(pieceScale, 0, 3);
         drawSnake(startIndex, posNieves, pointsNieves, (float) p.TWO_PI * 0.75f, globalScale, pieceScale, stepCounter);
         drawSnake(startIndex, posEnvies, pointsEnvies, (float) p.TWO_PI * 0.25f, globalScale, pieceScale, stepCounter);
@@ -122,7 +118,6 @@ public class Poster7 extends Poster{
         p.translate(position.x, position.y);
         p.rotate(rotation);
         p.scale(gScale);
-
         p.fill(0, 0, 0, 0);
         p.stroke(p.color(0, 0, 0, 1));
         p.strokeWeight(0.1f);
@@ -134,21 +129,22 @@ public class Poster7 extends Poster{
             //filter(BLUR, 1);
 
             float pieceRotation = (float)i / pointsNieves.length * magicValue * 0.01f;
+
             p.push();
-            if (disableLerp) {
-                p.translate(point1.x, point1.y);
-            } else {
-                p.translate(p.lerp(point1.x, point2.x, stepCounter), p.lerp(point1.y, point2.y, stepCounter));
-            }
-            p.rotate(pieceRotation);
 
-            // adaptive snake draw
-            int skip = p.constrain(p.round(p.map(scaleDiameter, 1.0f, p.width * 0.01f, 1f, 20f)), 1, 10);
-            //if (i % skip == 0)
-            drawSnakePiece(0, 0, scaleDiameter, strokeWeight);
+                if (disableLerp) {
+                    p.translate(point1.x, point1.y);
+                } else {
+                    p.translate(p.lerp(point1.x, point2.x, stepCounter), p.lerp(point1.y, point2.y, stepCounter));
+                }
+                p.rotate(pieceRotation);
 
+                // adaptive snake draw
+                int skip = p.constrain(p.round(p.map(scaleDiameter, 1.0f, p.width * 0.01f, 1f, 20f)), 1, 10);
+                //if (i % skip == 0)
+                drawSnakePiece(0, 0, scaleDiameter, strokeWeight);
+           //p.ellipse(0, 0, scaleDiameter, scaleDiameter);
             p.pop();
-
 
             //render last piece with rotation
             if (i >= points.length - 1) {
@@ -178,8 +174,8 @@ public class Poster7 extends Poster{
        // p.scale(250 * s, 325 * s);
        // p.shape(circle);
        // p.popMatrix();
-        p.ellipseMode(p.CORNER);
-        p.ellipse(x, y, 250 * s, 325 * s);
+            p.ellipseMode(p.CORNER);
+            p.ellipse(x, y, 250 * s, 325 * s);
     }
 
 }

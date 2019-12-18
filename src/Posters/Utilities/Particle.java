@@ -23,7 +23,6 @@ public class Particle {
 
         this.vel.limit(maxSpeed);
         this.pos.add(this.vel);
-
         this.acc.mult(0);
     }
 
@@ -97,9 +96,8 @@ public class Particle {
 
         p.stroke(51);
         p.fill(51);
-
-        p.text(letter, this.pos.x, this.pos.y);
-        // ellipse(this.pos.x, this.pos.y, 8, 8);
+        //p.text(letter, this.pos.x, this.pos.y);
+         p.rect(this.pos.x, this.pos.y, 3, 3);
     }
 
 

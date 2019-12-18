@@ -2,17 +2,23 @@ import processing.core.*;
 import ch.bildspur.realsense.*;
 import java.util.ArrayList;
 import gab.opencv.*;
+import processing.awt.PSurfaceAWT;
+import processing.awt.PSurfaceAWT.SmoothCanvas;
+
+
+import javax.transaction.TransactionRequiredException;
 import java.awt.Rectangle;
 
 
 public class RealSenseApplet extends PApplet {
     //  private SyphonClient client;
+    private PApplet p;
     public PImage realsenseImg;
     private OpenCV opencv;
     private boolean loop;
     private boolean DEBUG = false;
     private int trackingLow = 0;
-    private int trackingHigh = 1000;
+    private int trackingHigh = 2300;
     private boolean cameraAvailable = false;
     private boolean videoOutput = false;
     private PVector Pos;
@@ -21,7 +27,8 @@ public class RealSenseApplet extends PApplet {
     ArrayList<Contour> contours;
     RealSenseCamera camera = new RealSenseCamera(this);
 
-    public RealSenseApplet(boolean DEBUG) {
+    public RealSenseApplet(boolean DEBUG, PApplet parent) {
+        this.p = parent;
         this.DEBUG = DEBUG;
     }
 
@@ -30,16 +37,24 @@ public class RealSenseApplet extends PApplet {
         if (DEBUG) {
             size(640, 480, P2D);
         } else {
-            fullScreen(P2D, 2);
+            size(1024, 600, P2D);
+         // fullScreen(P2D, 1);
         }
+        setUpScreen();
     }
 
+    //public PSurface initSurface() {
+    //    PSurface pSurface = super.initSurface();
+    //    pSurface.setResizable(true);
+    //    return pSurface;
+    //}
+
     public void setup() {
-       // setupCamera();
+        // setupCamera();
         realsenseImg = new PImage(width, height);
         Pos = new PVector(.5f, .5f, .5f);
         //frameRate(30);
-        this.background(255,0,0);
+        this.background(100,100,100);
         runCamera(false);
         frameRate(30 );
     }
@@ -61,24 +76,30 @@ public class RealSenseApplet extends PApplet {
 
         if (cameraLoadSuccess) {
             if (!videoOutput) {
-                updated = true;
-                set(0,0,realsenseImg);
+                //updated = true;
+                //set(0,0,realsenseImg);
+                image(realsenseImg,0,0,width,height);
                 blobTracking(realsenseImg);
                 if (contours.size() > 0) {
                     Contour biggestContour = contours.get(0);
                     Rectangle r = biggestContour.getBoundingBox();
-                    if (r.width >= 60) {
+                    if (r.width >= 90) {
                         noFill();
-                        strokeWeight(2);
-                        stroke(30, 100, 100);
-                        rect(r.x, r.y, r.width, r.height);
+                        strokeWeight(4);
+                        stroke(255, 0, 0);
+                        float scale = (float)width/640;
+                        float rx = r.x *scale;
+                        float ry = r.y*scale;
+                        float rw = r.width*scale;
+                        float rh = r.height*scale;
+                        rect(rx, ry, rw, rh);
                         fill(30, 100, 100);
                         rect(r.x + r.width / 2, r.y + r.height / 2, 10, 10);
                         float x = r.x + r.width / 2;
                         float y = r.y + r.height / 2;
-                        float z = width / r.width;
-                        x = x / width;
-                        y = y / height;
+                        float z = realsenseImg.width / r.width;
+                        x = x / realsenseImg.width;
+                        y = y / realsenseImg.height;
                         Pos.set(x, y, z);
                         updated = true;
                     }
@@ -86,23 +107,28 @@ public class RealSenseApplet extends PApplet {
             } else {
                 //  just video
                 updated = true;
-                set(0,0,realsenseImg);
+                //set(0,0,realsenseImg);
+                image(realsenseImg,0,0,width,height);
             }
         } else {
             if (this.frameCount%1000 == 1) {
                 setupCamera();
             }
         }
-       if( DEBUG) {
-           surface.setTitle("FPS: " + floor(frameRate)); //Set the frame title to the frame rate
-       }
+        if( DEBUG) {
+            surface.setTitle("FPS: " + floor(frameRate)); //Set the frame title to the frame rate
+        }
+        if(p == null) {
+            shutDown();
+        }
+
     }
 
     private void setupCamera() {
         println("setuping up Camera");
         try {
             camera.start(640, 480, 30, true, false);
-            opencv = new OpenCV(this, width, height);
+            opencv = new OpenCV(this, 640, 480);
             cameraAvailable = true;
         } catch (Exception e) {
             //  e.printStackTrace();
@@ -144,20 +170,34 @@ public class RealSenseApplet extends PApplet {
     }
 
     public void shutDown() {
+        println("realsence shutdown");
         camera.stop();
         exit();
     }
 
     private void blobTracking(PImage depthImage) {
-        PImage trackImage = depthImage;
-        opencv.loadImage(trackImage);
-        opencv.contrast(1.3f);
-        opencv.dilate();
-        opencv.blur(5);
-        opencv.erode();
-        opencv.erode();
-        opencv.erode();
-      //  set(0, 0,opencv.getSnapshot());
-        contours = opencv.findContours(true, true);
+        try {
+            PImage trackImage = depthImage;
+            opencv.loadImage(trackImage);
+            opencv.contrast(1.3f);
+            opencv.dilate();
+            opencv.blur(5);
+            opencv.erode();
+            opencv.erode();
+            opencv.erode();
+            //  set(0, 0,opencv.getSnapshot());
+            contours = opencv.findContours(true, true);
+        } catch(Throwable ex) {
+            System.err.println("Error: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    private void setUpScreen() {
+       // frame.setLocation(200, 200);
+       // this.surface.setResizable(true);
+     //   int startPointX = 0;
+      //  int startPointY = 255;
+     //   this.surface.setLocation(startPointX, startPointY);
     }
 }

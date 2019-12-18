@@ -1,3 +1,4 @@
+//Celina Springer
 package Posters;
 
 import processing.core.*;
@@ -27,20 +28,20 @@ public class Poster3 extends Poster{
         bgColor = p.color(255, 100);
         p.rectMode(p.CENTER);
         p.fill(255);
-        //p.printArray(PFont.list());
-        f = p.loadFont(fontName1);
-        p.textFont(f);
-        p.textAlign(p.CENTER, p.CENTER);
+        // f = p.loadFont(fontName1);
+        //p.textFont(f);
+        //p.textAlign(p.CENTER, p.CENTER);
 
         words.add(" THE LOVE  OF NOVELS");
         words.add("EVOLVE ONTO  SHELF  ");
-        nextWord(wordIndex);
+        pixelSteps = (int)((float)p.height*0.013); // Amount of pixels to skip
         historyPos = new PVector();
         imgs = new PImage[2];
         imgs[0] = p.loadImage("Poster3/img1.png");
-        imgs[1] = p.loadImage("Poster3/img1.png");
-        imgs[0].resize(p.width,p.height);
-        imgs[1].resize(p.width,p.height);
+        imgs[1] = p.loadImage("Poster3/img2.png");
+         imgs[0].resize(p.width,p.height);
+         imgs[1].resize(p.width,p.height);
+        nextWord(wordIndex);
     }
 
     public boolean draw(PVector Pos) {
@@ -59,7 +60,7 @@ public class Poster3 extends Poster{
 
 
         p.push();
-        //translate(10, 0);  // ????
+
         for (int x = particles.size ()-1; x > -1; x--) {
             // Simulate and draw pixels
 
@@ -102,7 +103,6 @@ public class Poster3 extends Poster{
         if (historyPos.x!= Pos.x || historyPos.y != Pos.y) {
             boredTimer = 0;
             bored = false;
-
             changeTimer ++;
             if ( changeTimer  > 800) {
                 change();
@@ -130,53 +130,33 @@ public class Poster3 extends Poster{
 
     private void nextWord(int index) {
         // Draw word in memory
-       //   PImage pg = imgs[index].copy();
-       //  pg.loadPixels();
-        PGraphics pg = p.createGraphics(p.width,  p.height);
-        pg.beginDraw();
-        pg.fill(0);
-        pg.textSize(200);
-        pg.textAlign(p.CORNER);
-        //  PFont font = p.createFont(fontName, 195);
-        f = p.loadFont(fontName2);
-        pg.textFont(f);
-        pg.text(words.get(index), 0, p.height/2);
-        pg.endDraw();
-        //pg.resize(p.width, p.height);
-        // pg.save(word+".png");
-        pg.loadPixels();
-
-
+        PImage pg = imgs[index];
+        float scaleFactorX = (float)p.width/pg.width;
+        float scaleFactorY = (float)p.height/pg.height;
         int particleCount = particles.size();
         int particleIndex = 0;
 
         // Collect coordinates as indexes into an array
         // This is so we can randomly pick them to get a more fluid motion
         ArrayList<Integer> coordsIndexes = new ArrayList<Integer>();
-        for (int i = 0; i < (pg.width*pg.height)-1; i+= pixelSteps) {
-            coordsIndexes.add(i);
+        for (int i = 0; i < (pg.width*pg.height)-1; i+=pixelSteps) {
+            // Only continue if the pixel is not blank
+            if (pg.pixels[i] != 0) {
+                coordsIndexes.add(i);
+            }
         }
-
         for (int i = 0; i < coordsIndexes.size (); i++) {
             // Pick a random coordinate
             int randomIndex = (int)p.random(0, coordsIndexes.size());
             int coordIndex = coordsIndexes.get(randomIndex);
             coordsIndexes.remove(randomIndex);
 
-            // Only continue if the pixel is not blank
-
-            int argb = pg.pixels[coordIndex];
-            int a = (argb >> 24) & 0xFF;
-            int  r = (argb >> 16) & 0xFF;
-            int   g = (argb >> 8) & 0xFF;
-            int   b = argb & 0xFF;
-            float magnitude = (r+g+b)/3;
-
             if (pg.pixels[coordIndex] != 0) {
-            //    if (magnitude <= .3) {
-                // Convert index to its coordinates
-                int x = coordIndex % p.width;
-                int y = coordIndex / p.width;
+
+                int x = coordIndex % pg.width;
+                int y = coordIndex / pg.width;
+                x = (int)(x*scaleFactorX);
+                y = (int)(y*scaleFactorY);
 
                 Particle newParticle;
 
@@ -188,11 +168,9 @@ public class Poster3 extends Poster{
                 } else {
                     // Create a new particle
                     newParticle = new Particle(p);
-
                     PVector randomPos = newParticle.generateRandomPos(p.width/2, p.height/2, (p.width+p.height)/2);
                     newParticle.pos.x = randomPos.x;
                     newParticle.pos.y = randomPos.y;
-
                     newParticle.maxSpeed = p.random(2.0f, 5.0f);
                     newParticle.maxForce = newParticle.maxSpeed*0.025f;
                     newParticle.particleSize = 5;
@@ -200,7 +178,6 @@ public class Poster3 extends Poster{
 
                     particles.add(newParticle);
                 }
-
 
                 // Assign the particle's new target to seek
                 newParticle.target.x = x;

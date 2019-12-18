@@ -6,6 +6,7 @@ public class Poster0 extends Poster{
     public Poster0(PApplet parent, boolean DEBUG) {
         super(parent, DEBUG);
         p.rectMode(p.CENTER);
+        p.fill(255);
     }
 
     public boolean draw(PVector Pos) {

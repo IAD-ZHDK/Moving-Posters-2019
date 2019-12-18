@@ -30,11 +30,12 @@ public class Poster6 extends Poster{
         rows = p.height / videoScale;
 
         //fontShape = loadShape("b_weiss.svg");
-
+        p.fill(255);
         img = p.loadImage("Poster6/b_weiss_final.gif");
         if (DEBUG) {
             img.resize(p.width,p.height);
         }
+
         p.imageMode(p.CORNER);
         //graphic = p.loadShape("Poster6/b_weiss_final.svg");
         //graphic.resize(p.width, p.height);
@@ -101,16 +102,20 @@ public class Poster6 extends Poster{
                     //p.popMatrix();
                 } else {
                     p.stroke(0xff000000 | (int)( p.random(0xffffff)));
-                    p.rect(x, y, 1, 1);
+                    //p.rect(x, y, 1, 1);
+                    p.strokeWeight(2);
+                    p.line(x, y, x+1, y+1);
+
                 }
             }
-           // p.shape(graphic, 0, 0, p.width,p.height);
-            //p.image(img, 0, 0);
-            //p.set(0, 0,img);
-            //todo: image display is slowing down applet here. Maybe use a gif or an svg.
-            //imageMode(CENTER);
-        }
 
+
+        }
+        // p.shape(graphic, 0, 0, p.width,p.height);
+        //p.image(k, p.width/2, p.height/2);
+        p.image(img, 0,0);
+        //todo: image display is slowing down applet here. Maybe use a gif or an svg.
+        //imageMode(CENTER);
         return true;
     }
 

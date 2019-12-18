@@ -5,7 +5,7 @@ package Posters;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Poster2 extends imgPoster{
+public class Poster2 extends ImgPoster {
 
     public Poster2(PApplet parent, boolean DEBUG) {
         super(parent, DEBUG, "Poster2/", "GDB_Anagramm_V01_", 225, 1);

@@ -2,6 +2,7 @@ import processing.core.*;
 
 
 public class Sketch extends PApplet{
+
     private static final boolean DEBUG = true;
     private int posterWidth;
     private int posterHeight;
@@ -20,16 +21,18 @@ public class Sketch extends PApplet{
     private int nextPoster = 0; // next vis
     private int totalPosters = 7; // current vis
     private Posters.Poster Poster;
+    private int AnimationStyle = 0;
 
     public Sketch( int nextPoster) {
-        this.nextPoster = nextPoster;
-        currentPoster = nextPoster;
+        if (nextPoster<=totalPosters) {
+            this.nextPoster = nextPoster;
+            currentPoster = nextPoster;
+        }
     }
 
     public void settings() {
         if (DEBUG) {
             size(1080,960, FX2D);
-            // fullScreen(FX2D);
         } else {
             fullScreen(FX2D, SPAN);
         }
@@ -41,21 +44,34 @@ public class Sketch extends PApplet{
             width = 1080;
             height = 960;
         } else {
+            setUpScreen();
             noCursor();
-            int d = day();
-            nextPoster = d%(totalPosters+1);
         }
         realsenseImg = new PImage(640, 480);
         target = new PVector(.5f,.5f,.5f);
         surface.setAlwaysOnTop(true);
-        RealSence = new RealSenseApplet(DEBUG);
+        RealSence = new RealSenseApplet(DEBUG,this);
         PApplet.runSketch(new String[] {"Sketch"}, RealSence);
         startPoster();
+        prepareExitHandler ();
+
     }
 
     public void draw() {
+
+        if (hour() == 1) {
+            println("time to sleep");
+            RealSence.shutDown();
+        }
+
+        if ((frameCount+1)%10000 == 1) {
+            println("next");
+            nextProject();
+       }
+
         if (nextPoster != currentPoster) {
             currentPoster = nextPoster;
+            colorMode(RGB,255,255,255);
             Poster.distroyImgs();
             Poster = null;
             startPoster();
@@ -100,6 +116,7 @@ public class Sketch extends PApplet{
 
 
     private void startPoster() {
+        AnimationStyle = 0;
         if (currentPoster == 1) {
             Poster = new Posters.Poster1(this, DEBUG);
             println("Poster1");
@@ -113,24 +130,18 @@ public class Sketch extends PApplet{
             Poster = new Posters.Poster4(this, DEBUG);
             println("Poster4");
         } else if (currentPoster == 5) {
-            // need to create new aplet to handle different renderer.
-            Poster = new Posters.templateImg(this, DEBUG);
+            AnimationStyle = 1;
+            Poster = new Posters.Poster5(this, DEBUG);
             println("Poster5");
         } else if (currentPoster == 6) {
             Poster = new Posters.Poster6(this, DEBUG);
             println("Poster6");
         } else if (currentPoster == 7) {
-             Poster = new Posters.Poster7(this, DEBUG);
+            Poster = new Posters.Poster7(this, DEBUG);
             println("Poster7");
-        } else if (currentPoster == 9) {
-            //Poster = new Posters.Poster5(this, DEBUG);
-            println("Poster9");
-        }  else if (currentPoster == 10) {
-            //Poster = new Posters.Poster5(this, DEBUG);
-            println("Poster10");
-        } else {
-            Poster = new Posters.Poster0(this, DEBUG);
-            println("Poster0");
+        }  else {
+            Poster = new Posters.Poster8(this, DEBUG);
+            println("Poster8");
         }
 
     }
@@ -148,9 +159,13 @@ public class Sketch extends PApplet{
         }
 
         if (updateFlag>100) {
-            //animation if there are no input values
-            angle += 0.005f;
-            target = new PVector((float)(Math.sin(angle)+1f)*.5f, (float)(Math.cos(angle)+1f)*.1f+.5f);
+            if (AnimationStyle == 0) {
+                //animation if there are no input values
+                angle += 0.005f;
+                target = new PVector((float)(Math.sin(angle)+1f)*.5f, (float)(Math.cos(angle)+1f)*.1f+.5f);
+            } else {
+                target = new PVector(0.0f,0.0f,0.0f);
+            }
         }
         PVector temp = target.copy();
         temp.mult(1-averageWeight);
@@ -169,7 +184,7 @@ public class Sketch extends PApplet{
             }
         } catch (Exception e) {
             e.printStackTrace();
-           // realsenseImg = new PImage(640, 480);
+            // realsenseImg = new PImage(640, 480);
         }
 
     }
@@ -180,12 +195,12 @@ public class Sketch extends PApplet{
         //exit();
     }
     public void keyPressed() {
-        if (keyCode == UP) {
-            RealSence.shutDown();
-        }
 
-        if (keyCode == '0' ||keyCode == '1'||keyCode == '2' ||keyCode == '3'||keyCode == '4' ||keyCode == '5'||keyCode == '6' ||keyCode == '7') {
+
+        if (keyCode == '0' ||keyCode == '1'||keyCode == '2' ||keyCode == '3'||keyCode == '4' ||keyCode == '5'||keyCode == '6' ||keyCode == '7'||keyCode == '8'||keyCode == '9') {
             nextProject(Character.getNumericValue(keyCode));
+        } else {
+                RealSence.shutDown();
         }
 
     }
@@ -207,14 +222,10 @@ public class Sketch extends PApplet{
         }
     }
 
-    public void stop() {
-        println("In stop");
-        super.stop();
-    }
 
     private void setUpScreen() {
-        float pageWidth = 1080*2;
-        float pageHeight = 1920;
+        int pageWidth = 1080*2;
+        int pageHeight = 1920;
         surface.setResizable(true);
         float aspectRatioH = pageWidth/pageHeight;
         float aspectRatioV = pageHeight/pageWidth;
@@ -228,12 +239,17 @@ public class Sketch extends PApplet{
             posterWidth= floor(displayHeight*aspectRatioH);
             posterHeight = displayHeight;
         }
-        surface.setSize(posterWidth, posterHeight);
-        width = floor(posterWidth);
-        height = floor(posterHeight);
+        //surface.setSize(posterWidth, posterHeight);
+        surface.setSize(pageWidth, pageHeight);
+       //width = floor(posterWidth);
+       // height = floor(posterHeight);
+        width = posterWidth;
+        height = pageHeight;
         //reposition output in center of display
-        int startPointX = (displayWidth/2) - (width/2);
-        int startPointY = (displayHeight/2) - (height/2);
+        //int startPointX = (displayWidth/2) - (width/2);
+        //int startPointY = (displayHeight/2) - (height/2);
+        int startPointX = 0;
+        int startPointY = 0;
         surface.setLocation(startPointX, startPointY);
     }
 
@@ -243,5 +259,20 @@ public class Sketch extends PApplet{
     private float usedMem() {
         return Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
     }
+
+    private void prepareExitHandler () {
+
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
+            public void run () {
+                System.out.println("SHUTDOWN HOOK");
+                //RealSence.shutDown();
+                // application exit code here
+            }
+
+        }));
+
+    }
+
 
 }
