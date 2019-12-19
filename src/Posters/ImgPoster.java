@@ -19,43 +19,17 @@ public class ImgPoster extends Poster{
         p.rectMode(p.CENTER);
         this.totalImages = totalImages;
         imageArray = new PImage[totalImages];
-        //loadState = new  ArrayList<Integer>();
-       //for (int i = 0; i <totalImages; i++) {
-        //    loadState.add(i);
-            //String seriesNo = p.nf(i, 3);
-           // imageArray[i] = p.requestImage(directory+""+prefix+seriesNo+".jpg");
-        //}
+
     }
 
     public boolean draw(PVector Pos) {
         if (imgCount<totalImages) {
             p.println(imgCount);
-            //p.println("loading images:");
-           /* for (int j = 0; j <loadState.size(); j++) {
-                int i = loadState.get(j);
-                if (imageArray[i].width == 0) {
-                    // p.println("image still loading");
-                } else if (imageArray[i].width == -1){
-                    p.println("image load fail");
-                    return false; // failed to load an image
-                }  else {
-                    // resize
-                    if (imageArray[i].width !=  p.width/imageSize) {
-                        imageArray[i].resize(p.width / imageSize, p.height);
-                    }
-                    loadState.remove(j);
-                    p.println(loadState.size());
-                    break;
-                }
-            }
-            */
-           // int i = loadState.get(0);
             String seriesNo = p.nf(imgCount, 3);
             imageArray[imgCount] = p.loadImage(directory+""+prefix+seriesNo+".jpg");
             if (imageArray[imgCount].width !=  p.width/imageSize) {
                 imageArray[imgCount].resize(p.width / imageSize, p.height);
             }
-            //loadState.remove(0);
             imgCount++;
             loadingAnimation();
         } else{

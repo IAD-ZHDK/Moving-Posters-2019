@@ -7,14 +7,15 @@ public class Particle {
     private PVector vel = new PVector(0, 0);
     private PVector acc = new PVector(0, 0);
     public PVector target = new PVector(0, 0);
-
+    private PImage letter;
     public float maxSpeed = 5;
     public float maxForce = 3;
     public float particleSize = 50;
     public boolean isKilled = false;
 
-    public Particle(PApplet p) {
+    public Particle(PApplet p, PImage img) {
         this.p =  p;
+        letter = img;
     }
 
     public void update() {
@@ -91,13 +92,14 @@ public class Particle {
     }
 
 
-    public void draw(char letter) {
+    public void draw(char txt) {
         // Draw particle
 
-        p.stroke(51);
-        p.fill(51);
-        //p.text(letter, this.pos.x, this.pos.y);
-         p.rect(this.pos.x, this.pos.y, 3, 3);
+      //  p.stroke(51);
+       // p.fill(51);
+      //  p.text(txt, this.pos.x, this.pos.y);
+        // p.rect(this.pos.x, this.pos.y, 3, 3);
+        p.image(letter, this.pos.x, this.pos.y);
     }
 
 

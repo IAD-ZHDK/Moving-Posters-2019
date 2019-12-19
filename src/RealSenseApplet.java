@@ -16,7 +16,7 @@ public class RealSenseApplet extends PApplet {
     public PImage realsenseImg;
     private OpenCV opencv;
     private boolean loop;
-    private boolean DEBUG = false;
+    private boolean DEBUG;
     private int trackingLow = 0;
     private int trackingHigh = 2300;
     private boolean cameraAvailable = false;
@@ -83,7 +83,8 @@ public class RealSenseApplet extends PApplet {
                 if (contours.size() > 0) {
                     Contour biggestContour = contours.get(0);
                     Rectangle r = biggestContour.getBoundingBox();
-                    if (r.width >= 90) {
+                    float diameter = (float)(r.width+r.height)/2;
+                    if (diameter >= 110) {
                         noFill();
                         strokeWeight(4);
                         stroke(255, 0, 0);

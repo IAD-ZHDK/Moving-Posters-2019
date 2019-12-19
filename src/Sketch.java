@@ -1,9 +1,8 @@
 import processing.core.*;
 
-
 public class Sketch extends PApplet{
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private int posterWidth;
     private int posterHeight;
 
@@ -19,9 +18,10 @@ public class Sketch extends PApplet{
     //posters
     private int currentPoster = 0; // current vis
     private int nextPoster = 0; // next vis
-    private int totalPosters = 7; // current vis
+    private int totalPosters = 9; // current vis
     private Posters.Poster Poster;
     private int AnimationStyle = 0;
+    private boolean realsenseShutdown = false;
 
     public Sketch( int nextPoster) {
         if (nextPoster<=totalPosters) {
@@ -54,17 +54,15 @@ public class Sketch extends PApplet{
         PApplet.runSketch(new String[] {"Sketch"}, RealSence);
         startPoster();
         prepareExitHandler ();
-
     }
 
     public void draw() {
-
         if (hour() == 1) {
             println("time to sleep");
+            realsenseShutdown = true;
             RealSence.shutDown();
         }
-
-        if ((frameCount+1)%10000 == 1) {
+        if ((millis()+1)%300000 == 1) {
             println("next");
             nextProject();
        }
@@ -88,7 +86,6 @@ public class Sketch extends PApplet{
             }
             pushStyle();
             pushMatrix();
-            // draw and check poster for errors
             try {
                 if (currentPoster == 6) {
                     // Poster 6 uses image feed from realsense camera
@@ -97,7 +94,6 @@ public class Sketch extends PApplet{
                 } else {
                     pos = getTarget();
                     Poster.draw(pos);
-                    //getTargetImage();
                 }
             } catch ( Exception e ) {
                 // go to nextproject if poster draw failes
@@ -139,9 +135,12 @@ public class Sketch extends PApplet{
         } else if (currentPoster == 7) {
             Poster = new Posters.Poster7(this, DEBUG);
             println("Poster7");
-        }  else {
+        }  else if (currentPoster == 8){
             Poster = new Posters.Poster8(this, DEBUG);
             println("Poster8");
+        }   else {
+            Poster = new Posters.Poster9(this, DEBUG);
+            println("Poster9");
         }
 
     }
@@ -178,13 +177,11 @@ public class Sketch extends PApplet{
     private void getTargetImage() {
         try {
             PImage temp = RealSence.getImage();
-            //  image(buffer.realsenseImg, 0, 0);
             if (temp != null) {
                 realsenseImg = temp.copy();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // realsenseImg = new PImage(640, 480);
         }
 
     }
@@ -195,14 +192,12 @@ public class Sketch extends PApplet{
         //exit();
     }
     public void keyPressed() {
-
-
         if (keyCode == '0' ||keyCode == '1'||keyCode == '2' ||keyCode == '3'||keyCode == '4' ||keyCode == '5'||keyCode == '6' ||keyCode == '7'||keyCode == '8'||keyCode == '9') {
             nextProject(Character.getNumericValue(keyCode));
         } else {
+                realsenseShutdown = true;
                 RealSence.shutDown();
         }
-
     }
 
     private void nextProject() {
@@ -241,8 +236,7 @@ public class Sketch extends PApplet{
         }
         //surface.setSize(posterWidth, posterHeight);
         surface.setSize(pageWidth, pageHeight);
-       //width = floor(posterWidth);
-       // height = floor(posterHeight);
+
         width = posterWidth;
         height = pageHeight;
         //reposition output in center of display
@@ -266,10 +260,12 @@ public class Sketch extends PApplet{
 
             public void run () {
                 System.out.println("SHUTDOWN HOOK");
-                //RealSence.shutDown();
+                if (!realsenseShutdown) {
+                    RealSence.shutDown();
+                }
+               // RealSence.shutDown();
                 // application exit code here
             }
-
         }));
 
     }

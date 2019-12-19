@@ -9,8 +9,6 @@ public class Poster6 extends Poster{
    private int videoScale = 10;
     // Number of columns and rows in the system
     private int cols, rows;
-    // Variable for capture device
-    //Capture video;
     private float lengthMax = 10;
     private float counter = 0;
 
@@ -58,9 +56,6 @@ public class Poster6 extends Poster{
         baseImage.copy(baseImage, zoom, zoom, baseImage.width - zoom, baseImage.height - zoom, 0, 0, baseImage.width, baseImage.height);
         baseImage.resize(cols, rows);
 
-        // baseImage.loadPixels();
-        ArrayList<Integer> imageGreyScaleList = new ArrayList<Integer>();
-
         // Begin loop for columns
         p.translate(8, 8);
 
@@ -81,28 +76,17 @@ public class Poster6 extends Poster{
                 float sz =  p.map( p.brightness(c), 0, 180, 0, lengthMax);
 
                 PVector line = new PVector(sz,0);
-                // Every three seconds pick a new color and then display
-                //if (millis()-timer > 3000) {
-                //  timer = millis();
-                //}
+
                 if (sz>1) {
                     float angle =  p.map( p.brightness(c), 0, 180, 0,  p.TWO_PI);
-                    //rectMode(CENTER);
+
                     line.rotate(angle);
-                    //stroke(0);
                     p.stroke(0xff000000 | (int)( p.random(0xffffff)));
-                    //stroke(color(int(random(255)),int(random(255)),int(random(255))));
-                    //strokeJoin(ROUND);
-
-                    //p.pushMatrix();
-                    //p.translate(x, y);
-                    //p.rotate(angle);
-
                     p.line(x, y, x+line.x, y+line.y);
                     //p.popMatrix();
                 } else {
                     p.stroke(0xff000000 | (int)( p.random(0xffffff)));
-                    //p.rect(x, y, 1, 1);
+
                     p.strokeWeight(2);
                     p.line(x, y, x+1, y+1);
 
@@ -111,11 +95,9 @@ public class Poster6 extends Poster{
 
 
         }
-        // p.shape(graphic, 0, 0, p.width,p.height);
-        //p.image(k, p.width/2, p.height/2);
+
         p.image(img, 0,0);
-        //todo: image display is slowing down applet here. Maybe use a gif or an svg.
-        //imageMode(CENTER);
+
         return true;
     }
 

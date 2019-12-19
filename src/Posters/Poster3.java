@@ -9,18 +9,19 @@ public class Poster3 extends Poster{
     private PFont f;
     private  PVector Pos;
     private ArrayList<Particle> particles = new ArrayList<Particle>();
-    private ArrayList<String> words = new ArrayList<String>();
+    //private ArrayList<String> words = new ArrayList<String>();
     private int bgColor;
     private  PVector historyPos;
-    private String fontName1 = "Poster3/RobotoMono-Bold-8.vlw";
-    private String fontName2 = "Poster3/RobotoMono-Bold-195.vlw";
+    //private String fontName1 = "Poster3/RobotoMono-Bold-8.vlw";
+    //private String fontName2 = "Poster3/RobotoMono-Bold-195.vlw";
     private int pixelSteps = 25; // Amount of pixels to skip
-    private int wordIndex = 1;
+    private int wordIndex = 0;
     private int boredTimer = 50;
     private int changeTimer = 0;
     private boolean bored = true;
     private boolean change = false;
     private PImage[] imgs;
+    private PImage[] letters;
 
     public Poster3(PApplet parent, boolean DEBUG) {
         super(parent, DEBUG);
@@ -28,20 +29,26 @@ public class Poster3 extends Poster{
         bgColor = p.color(255, 100);
         p.rectMode(p.CENTER);
         p.fill(255);
-        // f = p.loadFont(fontName1);
+        //f = p.loadFont(fontName1);
         //p.textFont(f);
         //p.textAlign(p.CENTER, p.CENTER);
+        letters = new PImage[21];
+        for (int i = 0; i<letters.length; i++) {
+            letters[i] =  p.loadImage("Poster3/letter_"+i+".png");
+        }
 
-        words.add(" THE LOVE  OF NOVELS");
-        words.add("EVOLVE ONTO  SHELF  ");
+        //words.add(" THE LOVE  OF NOVELS");
+        //words.add("EVOLVE ONTO  SHELF  ");
         pixelSteps = (int)((float)p.height*0.013); // Amount of pixels to skip
         historyPos = new PVector();
         imgs = new PImage[2];
         imgs[0] = p.loadImage("Poster3/img1.png");
         imgs[1] = p.loadImage("Poster3/img2.png");
-         imgs[0].resize(p.width,p.height);
-         imgs[1].resize(p.width,p.height);
+        imgs[0].resize(p.width,p.height);
+        imgs[1].resize(p.width,p.height);
         nextWord(wordIndex);
+
+
     }
 
     public boolean draw(PVector Pos) {
@@ -83,7 +90,7 @@ public class Poster3 extends Poster{
                 counter= 65;
             }
 
-            counter++;
+            // counter++;
 
             // Remove any dead pixels out of bounds
             if (particle.isKilled) {
@@ -121,7 +128,7 @@ public class Poster3 extends Poster{
     private void change() {
 
         wordIndex += 1;
-        if (wordIndex > words.size()-1) {
+        if (wordIndex >= 2) {
             wordIndex = 0;
         }
 
@@ -167,7 +174,7 @@ public class Poster3 extends Poster{
                     particleIndex += 1;
                 } else {
                     // Create a new particle
-                    newParticle = new Particle(p);
+                    newParticle = new Particle(p, letters[i%letters.length]);
                     PVector randomPos = newParticle.generateRandomPos(p.width/2, p.height/2, (p.width+p.height)/2);
                     newParticle.pos.x = randomPos.x;
                     newParticle.pos.y = randomPos.y;
