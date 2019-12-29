@@ -9,14 +9,13 @@ public class Poster0 extends Poster{
         p.fill(255);
     }
 
-    public boolean draw(PVector Pos) {
+    public void draw(PVector Pos)  throws Exception {
         super.draw(Pos);
         p.background(240);
         p.strokeWeight(5);
         p.stroke(50);
         shape1(Pos);
         shape2(Pos);
-        return true;
         }
 
         private void shape1(PVector Pos) {

@@ -2,28 +2,27 @@ import processing.core.*;
 
 public class Sketch extends PApplet{
 
-    private static final boolean DEBUG = false;
-    private int posterWidth;
-    private int posterHeight;
+    private boolean DEBUG;
 
     private RealSenseApplet RealSence;
     private PImage realsenseImg;
     // Object position
     private PVector average  = new PVector();
     private PVector target = new PVector();
-
     private float angle = 0;
     private float averageWeight = .97f; // ratio of old data vs new
     private int updateFlag = 0;
     //posters
     private int currentPoster = 0; // current vis
     private int nextPoster = 0; // next vis
-    private int totalPosters = 9; // current vis
+    private int totalPosters = 12; // current vis
     private Posters.Poster Poster;
     private int AnimationStyle = 0;
     private boolean realsenseShutdown = false;
+    private int changeCount = 0;
 
-    public Sketch( int nextPoster) {
+    public Sketch( int nextPoster, boolean DEBUG) {
+        this.DEBUG = DEBUG;
         if (nextPoster<=totalPosters) {
             this.nextPoster = nextPoster;
             currentPoster = nextPoster;
@@ -32,7 +31,7 @@ public class Sketch extends PApplet{
 
     public void settings() {
         if (DEBUG) {
-            size(1080,960, FX2D);
+            size(972,864, FX2D);
         } else {
             fullScreen(FX2D, SPAN);
         }
@@ -40,12 +39,11 @@ public class Sketch extends PApplet{
 
     public void setup() {
         if (DEBUG) {
-            //setUpScreen();
-            width = 1080;
-            height = 960;
+            width = 972;
+            height = 864;
         } else {
-            setUpScreen();
             noCursor();
+            setUpScreen();
         }
         realsenseImg = new PImage(640, 480);
         target = new PVector(.5f,.5f,.5f);
@@ -62,10 +60,11 @@ public class Sketch extends PApplet{
             realsenseShutdown = true;
             RealSence.shutDown();
         }
-        if ((millis()+1)%300000 == 1) {
+        changeCount++;
+        if (changeCount >= 54000) { // about 15 mins
             println("next");
             nextProject();
-       }
+        }
 
         if (nextPoster != currentPoster) {
             currentPoster = nextPoster;
@@ -107,6 +106,12 @@ public class Sketch extends PApplet{
         if (DEBUG) {
             float memory = (usedMem()/totalMem());
             surface.setTitle("fps: " + floor(frameRate)+ " mem: "+ nf(memory, 2,5)+"%"); //Set the frame title to the frame rate
+            // screen split line
+            pushStyle();
+            strokeWeight(1);
+            stroke(255, 0, 0, 70);
+            line( width/2, 0,  width/2,  height);
+            popStyle();
         }
     }
 
@@ -138,9 +143,22 @@ public class Sketch extends PApplet{
         }  else if (currentPoster == 8){
             Poster = new Posters.Poster8(this, DEBUG);
             println("Poster8");
-        }   else {
+        }   else if (currentPoster == 9){
             Poster = new Posters.Poster9(this, DEBUG);
             println("Poster9");
+        } else if (currentPoster == 10){
+            Poster = new Posters.Poster10(this, DEBUG);
+            println("Poster10");
+        }  else if (currentPoster == 11){
+            Poster = new Posters.Poster11(this, DEBUG);
+            println("Poster11");
+        } else if (currentPoster == 12){
+            Poster = new Posters.Poster12(this, DEBUG);
+            println("Poster12");
+        }  else {
+            AnimationStyle = 1;
+            Poster = new Posters.Poster13(this, DEBUG);
+            println("Poster13");
         }
 
     }
@@ -189,14 +207,13 @@ public class Sketch extends PApplet{
 
     public void mousePressed() {
         nextProject();
-        //exit();
     }
     public void keyPressed() {
         if (keyCode == '0' ||keyCode == '1'||keyCode == '2' ||keyCode == '3'||keyCode == '4' ||keyCode == '5'||keyCode == '6' ||keyCode == '7'||keyCode == '8'||keyCode == '9') {
             nextProject(Character.getNumericValue(keyCode));
         } else {
-                realsenseShutdown = true;
-                RealSence.shutDown();
+            realsenseShutdown = true;
+            RealSence.shutDown();
         }
     }
 
@@ -218,13 +235,17 @@ public class Sketch extends PApplet{
     }
 
 
+
     private void setUpScreen() {
         int pageWidth = 1080*2;
         int pageHeight = 1920;
         surface.setResizable(true);
+         /*
         float aspectRatioH = pageWidth/pageHeight;
         float aspectRatioV = pageHeight/pageWidth;
 
+        float posterWidth
+        float posterHeight
         if (displayWidth< displayHeight) {
             // for portrait mode
             posterWidth= displayWidth;
@@ -234,18 +255,17 @@ public class Sketch extends PApplet{
             posterWidth= floor(displayHeight*aspectRatioH);
             posterHeight = displayHeight;
         }
-        //surface.setSize(posterWidth, posterHeight);
-        surface.setSize(pageWidth, pageHeight);
 
-        width = posterWidth;
+        surface.setSize(posterWidth, posterHeight);
+          */
+        surface.setSize(pageWidth, pageHeight);
+        width = pageWidth;
         height = pageHeight;
-        //reposition output in center of display
-        //int startPointX = (displayWidth/2) - (width/2);
-        //int startPointY = (displayHeight/2) - (height/2);
         int startPointX = 0;
         int startPointY = 0;
         surface.setLocation(startPointX, startPointY);
     }
+
 
     private float totalMem() {
         return Runtime.getRuntime().totalMemory();
@@ -263,12 +283,12 @@ public class Sketch extends PApplet{
                 if (!realsenseShutdown) {
                     RealSence.shutDown();
                 }
-               // RealSence.shutDown();
-                // application exit code here
             }
         }));
 
     }
+
+
 
 
 }

@@ -6,7 +6,7 @@ import processing.core.*;
 public class Poster1 extends ImgPoster {
 
     public Poster1(PApplet parent, boolean DEBUG) {
-        super(parent, DEBUG, "Poster1/", "left", 120, 2);
+        super(parent, DEBUG, "Poster1/", "left","jpg", 120, 2);
     }
     protected void drawimages(PVector Pos) {
         int index = p.constrain(p.floor(imageArray.length*Pos.x), 0, imageArray.length-1);

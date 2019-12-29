@@ -1,3 +1,4 @@
+// Gian-Carlo Huber
 package Posters;
 
 import processing.core.*;
@@ -81,7 +82,7 @@ public class Poster4 extends Poster{
         }
     }
 
-    public boolean draw(PVector Pos) {
+    public void draw(PVector Pos) {
         PVector TargetPos = Pos.copy();
         TargetPos.x = 1-TargetPos.x;
         TargetPos.x = TargetPos.x*p.width;
@@ -150,7 +151,6 @@ public class Poster4 extends Poster{
                 p.popMatrix();
             }
         }
-        return true;
     }
 
     private int[] parseStringArray (String list) {

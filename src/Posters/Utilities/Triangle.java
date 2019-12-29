@@ -3,6 +3,7 @@ package Posters.Utilities;
 import processing.core.*;
 
 public class Triangle {
+    protected PApplet p;
     private float newTriangleWidth = 0;
     private float motionMouthT1 = 0;
     private boolean triggerMouthClose = false;
@@ -10,10 +11,16 @@ public class Triangle {
     private int counterMouthMotion = 0;
     private int speedMouth = 7;
     private boolean triggerMouthMotionStart = false;
-    private boolean triggerCoinMotion = false;
+    private float screenWidthFloat;
 
-    void render(float triangleheight, boolean triggerMotion, boolean triggerGhost, int width, int height) {
-        currentTriangleWidth = (width/4)/(height/triangleheight);
+    public Triangle (PApplet applet) {
+        this.p = applet;
+        screenWidthFloat = (float)p.width;
+    }
+
+
+    public void render(float triangleheight, boolean triggerMotion, boolean triggerGhost,boolean triggerCoinMotion) {
+        currentTriangleWidth = (screenWidthFloat/4)/(p.height/triangleheight);
         counterMouthMotion++;
         if (triggerGhost == true) {
             if (counterMouthMotion <= 200) {
@@ -40,7 +47,7 @@ public class Triangle {
         if (triggerMotion == true) {
             if (triggerCoinMotion == false) {
                 if (triggerMouthMotionStart == true) {
-                    if (currentTriangleWidth + motionMouthT1 >= ((width/4)/(height/triangleheight))) {
+                    if (currentTriangleWidth + motionMouthT1 >= ((screenWidthFloat/4)/(p.height/triangleheight))) {
                         triggerMouthClose = true;
                     }
                     if (currentTriangleWidth + motionMouthT1 <= 0) {
@@ -75,6 +82,6 @@ public class Triangle {
             motionMouthT1 = 0;
         }
         newTriangleWidth = currentTriangleWidth+motionMouthT1;
-        //triangle(-newTriangleWidth, triangleheight, 0, 0, newTriangleWidth, triangleheight);
+        p.triangle(-newTriangleWidth, triangleheight, 0, 0, newTriangleWidth, triangleheight);
     }
 }

@@ -1,3 +1,4 @@
+//Alessia Wiss
 package Posters;
 
 import processing.core.*;
@@ -16,7 +17,6 @@ public class Poster8 extends Poster{
     private PImage limeSW;
     private PImage mouthSW;
     private PImage tongueSW;
-    private float posTongue; //mous x Ersetzen mit myTracker
     private ArrayList<Drop> drops = new ArrayList<Drop>();
 
 
@@ -66,7 +66,7 @@ public class Poster8 extends Poster{
 
     }
 
-    public boolean draw(PVector Pos) {
+    public void draw(PVector Pos) {
         if (p.frameCount % 250 == 1) {
             if (drops.size()<8) {
                 drops.add(new Drop(p));
@@ -120,8 +120,6 @@ public class Poster8 extends Poster{
         } else {
             p.image(lime, p.width/4, p.height/6);
         }
-
-        return true;
     }
 
 }

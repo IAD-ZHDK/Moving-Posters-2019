@@ -1,4 +1,4 @@
-// Kimon
+// Kimon Apeltsotou
 //
 package Posters;
 
@@ -8,7 +8,7 @@ import processing.core.PVector;
 public class Poster2 extends ImgPoster {
 
     public Poster2(PApplet parent, boolean DEBUG) {
-        super(parent, DEBUG, "Poster2/", "GDB_Anagramm_V01_", 225, 1);
+        super(parent, DEBUG, "Poster2/", "GDB_Anagramm_V01_","jpg", 225, 1);
     }
 
     protected void drawimages(PVector Pos) {

@@ -38,19 +38,11 @@ public class RealSenseApplet extends PApplet {
             size(640, 480, P2D);
         } else {
             size(1024, 600, P2D);
-         // fullScreen(P2D, 1);
         }
-        setUpScreen();
     }
 
-    //public PSurface initSurface() {
-    //    PSurface pSurface = super.initSurface();
-    //    pSurface.setResizable(true);
-    //    return pSurface;
-    //}
 
     public void setup() {
-        // setupCamera();
         realsenseImg = new PImage(width, height);
         Pos = new PVector(.5f, .5f, .5f);
         //frameRate(30);
@@ -85,26 +77,27 @@ public class RealSenseApplet extends PApplet {
                     Rectangle r = biggestContour.getBoundingBox();
                     float diameter = (float)(r.width+r.height)/2;
                     if (diameter >= 110) {
-                        noFill();
-                        strokeWeight(4);
-                        stroke(255, 0, 0);
-                        float scale = (float)width/640;
-                        float rx = r.x *scale;
-                        float ry = r.y*scale;
-                        float rw = r.width*scale;
-                        float rh = r.height*scale;
-                        rect(rx, ry, rw, rh);
-                        fill(30, 100, 100);
-                        rect(r.x + r.width / 2, r.y + r.height / 2, 10, 10);
-                        float x = r.x + r.width / 2;
-                        float y = r.y + r.height / 2;
-                        float z = realsenseImg.width / r.width;
-                        x = x / realsenseImg.width;
-                        y = y / realsenseImg.height;
-                        Pos.set(x, y, z);
-                        updated = true;
+
+                            noFill();
+                            strokeWeight(4);
+                            stroke(255, 0, 0);
+                            float scale = (float) width / 640;
+                            float rx = r.x * scale;
+                            float ry = r.y * scale;
+                            float rw = r.width * scale;
+                            float rh = r.height * scale;
+                            rect(rx, ry, rw, rh);
+                            fill(30, 100, 100);
+                            rect(r.x + r.width / 2, r.y + r.height / 2, 10, 10);
+                            float x = r.x + r.width / 2;
+                            float y = r.y + r.height / 2;
+                            float z = realsenseImg.width / r.width;
+                            x = x / realsenseImg.width;
+                            y = y / realsenseImg.height;
+                            Pos.set(x, y, z);
+                            updated = true;
+                        }
                     }
-                }
             } else {
                 //  just video
                 updated = true;
@@ -112,7 +105,7 @@ public class RealSenseApplet extends PApplet {
                 image(realsenseImg,0,0,width,height);
             }
         } else {
-            if (this.frameCount%1000 == 1) {
+            if (this.frameCount%4000 == 1) {
                 setupCamera();
             }
         }
@@ -132,7 +125,7 @@ public class RealSenseApplet extends PApplet {
             opencv = new OpenCV(this, 640, 480);
             cameraAvailable = true;
         } catch (Exception e) {
-            //  e.printStackTrace();
+            cameraAvailable = false;
             println("camera not available");
         }
 
@@ -172,7 +165,7 @@ public class RealSenseApplet extends PApplet {
 
     public void shutDown() {
         println("realsence shutdown");
-        camera.stop();
+            camera.stop();
         exit();
     }
 
@@ -194,11 +187,4 @@ public class RealSenseApplet extends PApplet {
         }
     }
 
-    private void setUpScreen() {
-       // frame.setLocation(200, 200);
-       // this.surface.setResizable(true);
-     //   int startPointX = 0;
-      //  int startPointY = 255;
-     //   this.surface.setLocation(startPointX, startPointY);
-    }
 }

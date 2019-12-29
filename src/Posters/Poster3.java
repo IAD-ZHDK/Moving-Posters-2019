@@ -51,7 +51,7 @@ public class Poster3 extends Poster{
 
     }
 
-    public boolean draw(PVector Pos) {
+    public void draw(PVector Pos) {
 
         p.fill(bgColor);
         p.noStroke();
@@ -122,7 +122,6 @@ public class Poster3 extends Poster{
             changeTimer = 0;
         }
         historyPos = Pos.copy();
-        return true;
     }
 
     private void change() {

@@ -1,5 +1,4 @@
 // Ramona Ruettimann
-
 package Posters;
 
 import processing.core.*;
@@ -13,8 +12,7 @@ public class Poster5 extends Poster {
     private String activeState = "videoStateOn";
 
     private int boredTimer = 0;
-    private boolean bored = true;
-    private PVector Pos, historyPos;
+  //  private PVector historyPos;
 
     private float hx = 0, hy = 0, px = 0, py = 0;
 
@@ -44,7 +42,6 @@ public class Poster5 extends Poster {
             String seriesNo = p.nf(j, 3);
             j++;
             loadState.add(directory+"image"+seriesNo+".png");
-            //imageArray[i] = p.requestImage(directory+"image"+seriesNo+".png");
             p.println(i);
         }
         j = 0;
@@ -53,16 +50,13 @@ public class Poster5 extends Poster {
             String seriesNo = p.nf(j, 3);
             j++;
             loadState.add(directory+"image_men_"+seriesNo+".png");
-            //imageArray[i] = p.requestImage(directory+"image_men_"+seriesNo+".png");
         }
         j = 0;
 
         for (int i = noWomStrt; i <noWomEnd; i++) {
             String seriesNo = p.nf(j, 3);
             j++;
-            //loadState.add(i);
             loadState.add(directory+"imagenothing"+seriesNo+".png");
-            //imageArray[i] = p.requestImage(directory+"imagenothing"+seriesNo+".png");
 
         }
         j = 0;
@@ -71,16 +65,14 @@ public class Poster5 extends Poster {
             p.println(j);
             String seriesNo = p.nf(j, 3);
             j++;
-            //loadState.add(i);
             loadState.add(directory+"image_men_nothing"+seriesNo+".png");
-            //imageArray[i] = p.requestImage(directory+"image_men_nothing"+seriesNo+".png");
         }
 
         p.imageMode(p.CORNER);
     }
 
 
-    public boolean draw(PVector Pos) {
+    public void draw(PVector Pos) {
         if (imgCount<totalImages) {
             p.println(imgCount);
             String seriesNo = p.nf(imgCount, 3);
@@ -94,7 +86,6 @@ public class Poster5 extends Poster {
             loading = false;
             drawimages(Pos);
         }
-        return true;
     }
 
     private void drawimages(PVector Pos) {
@@ -114,10 +105,10 @@ public class Poster5 extends Poster {
 
         p.image(imageArray[indexwomen], 0, 0);
         p.image(imageArray[indexmen],  p.width/2, 0);
-        px = (Pos.x);
-        py = (Pos.y);
-
-        if (hx == px && hy == py) {
+        px = Pos.x;
+        py = Pos.y;
+        float dist =  p.dist(hx,hy, px, py);
+        if (dist<0.01) {
             boredTimer++;
             if (boredTimer > 100) {
                 activeState = "videoStateOff";
@@ -125,38 +116,34 @@ public class Poster5 extends Poster {
             }
         }
 
-        historyPos = Pos.copy();
-        hx = (historyPos.x);
-        hy = (historyPos.y);
+        hx = Pos.x;
+        hy = Pos.y;
     }
 
     private void runpassiveState(PVector Pos)  {
 
         p.image(imageArray[passiveCounter], 0, 0);
         p.image(imageArray[passiveCounterMen],  p.width/2, 0);
-        //if (frameCount % 120 == 1  ) println("FPS"+frameRate); // for checking the performance of your code
-
         px = (Pos.x);
         py = (Pos.y);
 
-        //println(px + "-" + hx);
-        if (hx != px || hy != py) {
+        float dist =  p.dist(hx,hy, px, py);
+        if (dist>0.01) {
             activeState = "videoStateOn";
         }
         i++;
-        if (i > 1000) i = 0;
+        if (i > 750) i = 0;
         if (i<55 && i%5== 0) passiveCounter ++;
         if (i>550 && i<605 && i%5== 0) passiveCounterMen ++;
-        // todo: fix array here
         if (passiveCounter > noWomEnd - 1) {
             passiveCounter = noWomStrt;
         }
         if (passiveCounterMen > noManEnd - 1) {
             passiveCounterMen = noManStrt;
         }
-        historyPos = Pos.copy();
-        hx = (historyPos.x);
-        hy = (historyPos.y);
+        //historyPos = Pos.copy();
+        hx = (Pos.x);
+        hy = (Pos.y);
     }
 
 

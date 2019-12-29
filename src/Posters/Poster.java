@@ -12,23 +12,19 @@ public class Poster {
     protected int totalImages;
 
     Poster(PApplet parent,boolean DEBUG) {
-        // set parent
         this.p = parent;
     }
 
-    public boolean draw(PVector Pos) {
+    public void draw(PVector Pos) throws Exception {
     this.Pos = Pos;
-    return true;
     }
-    public boolean draw( PImage temp) {
+    public boolean draw( PImage temp) throws Exception {
         this.Pos = Pos;
         return true;
     }
 
     protected void loadingAnimation() {
         p.background(0);
-        // float x = (float)Math.sin(p.radians(p.frameCount))*10;
-        // float y = (float)Math.cos(p.radians(p.frameCount))*10;
         p.pushStyle();
         p.fill(100);
         p.ellipseMode(p.RADIUS);
@@ -36,8 +32,6 @@ public class Poster {
         p.pushMatrix();
         p.translate(p.width/4,p.height/2);
         p.arc(0, 0, 30, 30, 0, progress);
-        //p.arc(0, 0, 80, 80, p.PI, p.TWO_PI);
-        // p.circle(0,0 ,10);
         p.translate(p.width/2,0);
         p.arc(0, 0, 30, 30, 0, progress);
         p.popMatrix();
