@@ -14,10 +14,10 @@ public class Poster10 extends Poster{
         p.noStroke();
         nooption1 =  p.loadShape("Poster10/nooption1.svg");
         float scale =  nooption1.height/nooption1.width;
-        letterW = (float)(p.width/2)*.9f;
+        letterW = ((float)p.width/2)*.90f;
         letterH = letterW*scale;
         nooption1.disableStyle();
-        p.shapeMode( p.CENTER);
+        p.shapeMode(p.CENTER);
         p.rectMode(p.CORNER);
     }
 
@@ -56,7 +56,8 @@ public class Poster10 extends Poster{
         p.translate(x, y);
         p.rotate(angle);
         //
-        p.translate((p.width/4), -((p.height/2)-(nooption1.height/2))*.95f);
+        float gap = ((p.width/2)-letterW)/2;
+        p.translate((p.width/4), -((float)p.height/2f)+(letterH/2)+gap);
         p.shape(nooption1, 0,0,letterW, letterH);
         p.popMatrix();
     }

@@ -1,4 +1,4 @@
-// Nicola Delany
+// Andreas Waldburger
 package Posters;
 
 import processing.core.*;
@@ -37,7 +37,6 @@ public class Poster11 extends ImgPoster {
         p.line( p.width*0.35f, ( p.height*0.8f)-index*multi,  p.width*0.5f, ( p.height*0.55f)-index*(multi*0.2f));
         p.line( p.width*0.65f, ( p.height*0.2f)+index*multi,  p.width*0.5f, ( p.height*0.45f)+index*(multi*0.15f));
 
-        //kline strichli
         p.strokeCap( p.SQUARE);
         p.line( p.width*0.1f, ( p.height*0.8f)-index*multi,  p.width*0.13f, ( p.height*0.73f)-index*(multi*0.7f));
         p.line( p.width*0.85f, ( p.height*0.2f)+index*multi,  p.width*0.8f, ( p.height*0.3f)+index*(multi*0.7f));

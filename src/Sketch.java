@@ -3,7 +3,7 @@ import processing.core.*;
 public class Sketch extends PApplet{
 
     private boolean DEBUG;
-
+   // private Posters.PosterB P2Dapplet;
     private RealSenseApplet RealSence;
     private PImage realsenseImg;
     // Object position
@@ -31,6 +31,7 @@ public class Sketch extends PApplet{
 
     public void settings() {
         if (DEBUG) {
+            //size(1944,1728, FX2D);
             size(972,864, FX2D);
         } else {
             fullScreen(FX2D, SPAN);
@@ -39,8 +40,10 @@ public class Sketch extends PApplet{
 
     public void setup() {
         if (DEBUG) {
+           // width = 1944;
+           // height = 1728;
             width = 972;
-            height = 864;
+           height = 864;
         } else {
             noCursor();
             setUpScreen();
@@ -51,7 +54,8 @@ public class Sketch extends PApplet{
         RealSence = new RealSenseApplet(DEBUG,this);
         PApplet.runSketch(new String[] {"Sketch"}, RealSence);
         startPoster();
-        prepareExitHandler ();
+        prepareExitHandler();
+       // newWindow();
     }
 
     public void draw() {
@@ -61,9 +65,10 @@ public class Sketch extends PApplet{
             RealSence.shutDown();
         }
         changeCount++;
-        if (changeCount >= 54000) { // about 15 mins
+        if (changeCount >= 50000) { // about 13 mins
             println("next");
             nextProject();
+            changeCount = 0;
         }
 
         if (nextPoster != currentPoster) {
@@ -201,17 +206,19 @@ public class Sketch extends PApplet{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 
     public void mousePressed() {
         nextProject();
     }
     public void keyPressed() {
-        if (keyCode == '0' ||keyCode == '1'||keyCode == '2' ||keyCode == '3'||keyCode == '4' ||keyCode == '5'||keyCode == '6' ||keyCode == '7'||keyCode == '8'||keyCode == '9') {
+        if (keyCode == '1'||keyCode == '2' ||keyCode == '3'||keyCode == '4' ||keyCode == '5'||keyCode == '6' ||keyCode == '7'||keyCode == '8'||keyCode == '9') {
             nextProject(Character.getNumericValue(keyCode));
-        } else {
+        } //else if (keyCode == '0') {
+          //  surface.setAlwaysOnTop(false);
+          //  P2Dapplet.active();
+       // }
+        else {
             realsenseShutdown = true;
             RealSence.shutDown();
         }
@@ -267,9 +274,21 @@ public class Sketch extends PApplet{
     }
 
 
+  /*  private void newWindow() {
+        try {
+            P2Dapplet = new Posters.PosterB(DEBUG, this);
+            PApplet.runSketch(new String[]{"SketchB"}, P2Dapplet);
+        } catch(Exception e) {
+          println("failed to crate new applet");
+        }
+    }
+*/
+
+
     private float totalMem() {
         return Runtime.getRuntime().totalMemory();
     }
+
     private float usedMem() {
         return Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
     }

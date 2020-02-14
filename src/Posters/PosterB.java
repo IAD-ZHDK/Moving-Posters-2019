@@ -15,11 +15,13 @@ public class PosterB extends PApplet{
     //Picture danceArt;
 
     public PosterB(boolean DEBUG, PApplet parent) {
+        p.println("constructor");
         this.p = parent;
         this.DEBUG = DEBUG;
     }
 
     public void settings() {
+        p.println("settings");
         if (DEBUG) {
             size(972,864, P2D);
         } else {
@@ -29,6 +31,7 @@ public class PosterB extends PApplet{
 
 
     public void setup() {
+        p.println("setup");
         if (DEBUG) {
             width = 972;
             height = 864;
@@ -38,10 +41,13 @@ public class PosterB extends PApplet{
         }
     }
 
-
-    public void draw(PVector Pos) {
-
+    public void draw() {
+        background(100,0,0);
     }
+    public void active() {
+        surface.setAlwaysOnTop(true);
+    }
+
     private void setUpScreen() {
         int pageWidth = 1080*2;
         int pageHeight = 1920;
