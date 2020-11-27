@@ -55,7 +55,7 @@ public class Poster6 extends Poster{
                 int x = i*videoScale;
                 int y = j*videoScale;
 
-                // Reverse the column to mirro the image.
+                // Reverse the column to mirror the image.
                 int loc = i + j*baseImage.width;
                 int c = baseImage.pixels[loc];
 

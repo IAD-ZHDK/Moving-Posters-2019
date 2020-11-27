@@ -141,7 +141,6 @@ public class Poster3 extends Poster{
         float scaleFactorY = (float)p.height/pg.height;
         int particleCount = particles.size();
         int particleIndex = 0;
-
         // Collect coordinates as indexes into an array
         // This is so we can randomly pick them to get a more fluid motion
         ArrayList<Integer> coordsIndexes = new ArrayList<Integer>();

@@ -14,7 +14,7 @@ public class Sketch extends PApplet{
     private int updateFlag = 0;
     //posters
     private int currentPoster = 0; // current vis
-    private int nextPoster = 0; // next vis
+    private int nextPoster = 9; // next vis
     private int totalPosters = 12; // current vis
     private Posters.Poster Poster;
     private int AnimationStyle = 0;
